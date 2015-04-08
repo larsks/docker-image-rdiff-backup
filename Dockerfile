@@ -5,6 +5,7 @@ EXPOSE 22
 RUN yum -y install \
 	    openssh-server \
 	    passwd \
+	    rsync \
 	    rdiff-backup \
 	    ; yum clean all
 

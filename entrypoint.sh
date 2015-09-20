@@ -40,7 +40,12 @@ __create_other_users() {
 }
 
 __create_hostkeys() {
-ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N '' 
+	for type in rsa ecdsa ed25518; do
+		if ! [ -f /etc/ssh/ssh_host_$type_key ]; then
+			echo "generating $type key"
+			ssh-keygen -t $type -f /etc/ssh/ssh_host_$type_key -N ''
+		fi
+	done
 }
 
 # Call all functions

@@ -2,6 +2,7 @@
 
 : ${SSH_USERNAME:=backup}
 : ${SSH_USERPASS:=$(dd if=/dev/urandom bs=1 count=15 | base64)}
+: ${SSH_KEY_TYPES:="rsa ecdsa ed25119"}
 
 __create_rundir() {
 	mkdir -p /var/run/sshd
@@ -40,7 +41,7 @@ __create_other_users() {
 }
 
 __create_hostkeys() {
-	for type in rsa ecdsa ed25518; do
+	for type in $SSH_KEY_TYPES; do
 		if ! [ -f /etc/ssh/ssh_host_$type_key ]; then
 			echo "generating $type key"
 			ssh-keygen -t $type -f /etc/ssh/ssh_host_$type_key -N ''

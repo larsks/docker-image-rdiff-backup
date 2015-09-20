@@ -16,7 +16,6 @@ echo ssh user password: $SSH_USERPASS
 }
 
 __create_other_users() {
-	set -x
 	USERS=/run/metadata/users
 	if [ -f $USERS ]; then
 		while read username userpass; do
@@ -42,9 +41,12 @@ __create_other_users() {
 
 __create_hostkeys() {
 	for type in $SSH_KEY_TYPES; do
-		if ! [ -f /etc/ssh/ssh_host_$type_key ]; then
+		k="ssh_host_${type}_key"
+		if [ -f /run/metadata/$k ]; then
+			install -m 640 /run/metadata/$k /etc/ssh/$k
+		else
 			echo "generating $type key"
-			ssh-keygen -t $type -f /etc/ssh/ssh_host_$type_key -N ''
+			ssh-keygen -t $type -f /etc/ssh/ssh_host_${type}_key -N ''
 		fi
 	done
 }

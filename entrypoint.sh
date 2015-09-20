@@ -43,7 +43,7 @@ __create_hostkeys() {
 	for type in $SSH_KEY_TYPES; do
 		k="ssh_host_${type}_key"
 		if [ -f /run/metadata/$k ]; then
-			install -m 640 /run/metadata/$k /etc/ssh/$k
+			install -m 600 /run/metadata/$k /etc/ssh/$k
 		else
 			echo "generating $type key"
 			ssh-keygen -t $type -f /etc/ssh/ssh_host_${type}_key -N ''

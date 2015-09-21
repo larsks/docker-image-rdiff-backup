@@ -35,6 +35,11 @@ __create_other_users() {
 					/run/metadata/$username.key \
 					"$userhome/.ssh/authorized_keys"
 			fi
+
+			if [ -n "$BACKUPROOT" ]; then
+				install -m 700 -o $username -g $username \
+					-d $BACKUPROOT/$username
+			fi
 		done < $USERS
 	fi
 }
